@@ -5,7 +5,7 @@
 #define MAXLINE 1000
 
 int get_line(char line[], int max);
-void word_to_digit(char line[]);
+void get_digits(char line[]);
 int get_calval(char string[]);
 
 int main(void)
@@ -15,6 +15,7 @@ int main(void)
 	char line[MAXLINE];
 
 	while ((len = get_line(line, MAXLINE)) > 0) {
+		get_digits(line);
 		sum += get_calval(line);
 	}
 	printf("Calibration value: %d\n", sum);
@@ -35,11 +36,21 @@ int get_line(char line[], int max)
 	return i;
 }
 
-void word_to_digit(char line[])
+void get_digits(char line[])
 {
-	char num_words[10][10] = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+	int i, j;
+	char *pword;
+	char num_words[9][10] = { "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-	return;
+	for (i = 0; i < 9; i++) {
+		while ((pword = strstr(line, num_words[i])) != NULL) {
+			for (j = 0; line[j] != '\0'; j++) {
+				if (&line[j] == pword) {
+					line[j] = '1' + i;
+				}
+			}
+		}
+	}
 }
 
 int get_calval(char string[])
