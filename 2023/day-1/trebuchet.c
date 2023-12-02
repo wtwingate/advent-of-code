@@ -15,7 +15,6 @@ int main(void)
 	char line[MAXLINE];
 
 	while ((len = get_line(line, MAXLINE)) > 0) {
-		printf("%s\n", line);
 		sum += get_calval(line);
 	}
 	printf("Calibration value: %d\n", sum);
@@ -49,9 +48,6 @@ int get_calval(char string[])
 	int digit_count = 0;
 	char all_digits[MAXLINE];
 	char two_digits[2];
-	char first_digit;
-	char last_digit;
-	int calval = 0;
 
 	for (i = j = 0; string[i] != '\0'; i++) {
 		if (string[i] >= '0' && string[i] <= '9') {
@@ -59,16 +55,9 @@ int get_calval(char string[])
 			all_digits[j++] = string[i];
 		}
 	}
-	if (digit_count == 1) {
-		first_digit = last_digit = all_digits[0];
-	} else {
-		first_digit = all_digits[0];
-		last_digit = all_digits[digit_count - 1];
-	}
 
-	two_digits[0] = first_digit;
-	two_digits[1] = last_digit;
+	two_digits[0] = all_digits[0];
+	two_digits[1] = all_digits[digit_count -1];
 
-	printf("%s\n", two_digits);
-	return calval = atoi(two_digits);
+	return atoi(two_digits);
 }
