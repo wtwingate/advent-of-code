@@ -16,6 +16,8 @@ int main(void)
 
 	while ((len = get_line(line, MAXLINE)) > 0) {
 		get_digits(line);
+		printf("%s\n", line);
+		printf("%d\n", get_calval(line));
 		sum += get_calval(line);
 	}
 	printf("Calibration value: %d\n", sum);
@@ -52,6 +54,12 @@ void get_digits(char line[])
 		}
 	}
 }
+
+// Make function that walks through each line character by character
+// if character is a digit, add it to digit array
+// if character is a letter, mark the location, and begin checking forward to see if subsequent letters spell a number
+// if it does spell a number, add the equivalent digit to digit array
+// return to location mark and move forward by one character
 
 int get_calval(char string[])
 {
