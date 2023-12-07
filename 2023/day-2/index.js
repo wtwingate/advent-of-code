@@ -7,7 +7,7 @@ class gameObj {
 
 // Get lines from data
 const fs = require("fs");
-const file = fs.readFileSync("data", "utf-8");
+const file = fs.readFileSync("test-data", "utf-8");
 const rawLines = file.split("\n");
 const lines = rawLines.filter(rawLine => rawLine.trim());
 
@@ -27,6 +27,33 @@ lines.forEach((line) => {
 	games.push(game);
 })
 
+let powerSum = 0;
+
+games.forEach((game) => {
+	let bigRed = 0;
+	let bigGreen = 0;
+	let bigBlue = 0;
+	game.rounds.forEach((round) => {
+		round.forEach((scores) => {
+			scores.forEach((score) => {
+				if (score.endsWith("red") && score.match(/\d+/) > bigRed) {
+					bigRed = Number(score.match(/\d+/));
+				}
+				if (score.endsWith("green") && score.match(/\d+/) > bigGreen) {
+					bigGreen = Number(score.match(/\d+/));
+				}
+				if (score.endsWith("blue") && score.match(/\d+/) > bigBlue) {
+					bigBlue = Number(score.match(/\d+/));
+				}
+			})
+		})
+	})
+	powerSum += bigRed * bigGreen * bigBlue;
+});
+
+console.log(powerSum);
+
+/*
 const validGames = [];
 
 const maxRed = 12;
@@ -59,5 +86,5 @@ let sum = 0;
 validGames.forEach((game) => {
 	sum += Number(game.match(/\d+/))
 })
+*/
 
-console.log(sum);
