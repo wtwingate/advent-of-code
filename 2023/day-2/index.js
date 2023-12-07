@@ -1,4 +1,4 @@
-class game {
+class gameObj {
 	constructor(gameID) {
 		this.gameID = gameID;
 	}
@@ -7,7 +7,7 @@ class game {
 
 // Get lines from data
 const fs = require("fs");
-const file = fs.readFileSync("test-data", "utf-8");
+const file = fs.readFileSync("data", "utf-8");
 const rawLines = file.split("\n");
 const lines = rawLines.filter(rawLine => rawLine.trim());
 
@@ -17,16 +17,47 @@ const games = [];
 lines.forEach((line) => {
 	const arr = line.split(": ");
 	const rounds = arr[1].split("; ");
-	const gameObj = new game(arr[0]);
+	const game = new gameObj(arr[0]);
 	rounds.forEach((round) => {
 		const roundScores = [];
 		const scores = round.split(", ");
 		roundScores.push(scores);
-		gameObj.rounds.push(roundScores);
+		game.rounds.push(roundScores);
 	})
-	games.push(gameObj);
+	games.push(game);
 })
 
+const validGames = [];
+
+const maxRed = 12;
+const maxGreen = 13;
+const maxBlue = 14;
+
 games.forEach((game) => {
-	game.rounds.forEach(round => console.table(round));
+	let validScore = true;
+	game.rounds.forEach((round) => {
+		round.forEach((scores) => {
+			scores.forEach((score) => {
+				if (score.endsWith("red") && score.match(/\d+/) > maxRed) {
+					validScore = false;
+				}
+				if (score.endsWith("green") && score.match(/\d+/) > maxGreen) {
+					validScore = false;
+				}
+				if (score.endsWith("blue") && score.match(/\d+/) > maxBlue) {
+					validScore = false;
+				}
+			})
+		})
+	})
+	if (validScore === true) {
+		validGames.push(game.gameID);
+	}
+});
+
+let sum = 0;
+validGames.forEach((game) => {
+	sum += Number(game.match(/\d+/))
 })
+
+console.log(sum);
